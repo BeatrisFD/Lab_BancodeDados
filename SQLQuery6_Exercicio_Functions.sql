@@ -48,3 +48,45 @@ END
 drop function fn_salarios
 
 Select dbo.fn_salarios(1) as sal
+
+------------------------------------------------------------------------------------------------------
+
+CREATE TABLE Cliente(
+CPF INT NOT NULL,
+Nome VARCHAR(100) NOT NULL,
+Telefone VARCHAR(11),
+Email VARCHAR(100)
+PRIMARY KEY(CPF)
+)
+
+CREATE TABLE Produto(
+Codigo INT NOT NULL,
+Nome varchar(100) NOT NULL,
+Descricao varchar(100) NOT NULL,
+Valor_Unitario FLOAT NOT NULL
+PRIMARY KEY(Codigo))
+
+CREATE TABLE Venda(
+CPF_Cliente INT NOT NULL,
+Codigo_Produto INT NOT NULL,
+Quantidade INT NOT NULL,
+Dataa date NOT NULL,
+FOREIGN KEY (CPF_Cliente) REFERENCES Cliente(CPF),
+FOREIGN KEY (Codigo_Produto) REFERENCES Produto(Codigo))
+
+CREATE FUNCTION fn_clienteproduto()
+RETURNS @table TABLE (
+Nome_Cliente		VARCHAR(100),
+Nome_Produto		VARCHAR(100),
+Quantidade			INT,
+Valor_Total			Float
+)
+AS
+BEGIN
+	INSERT INTO @table (Nome_Cliente, Nome_Produto, Quantidade, Valor_Total)
+		SELECT c.Nome, p.Nome, v.Quantidade, p.Valor_Unitario
+		FROM Cliente as c, Produto as p, Venda as v where c.CPF = v.CPF_Cliente and v.Codigo_Produto = p.Codigo
+	RETURN
+END
+
+Select * from fn_clienteproduto()
