@@ -27,7 +27,6 @@ Select * from Entrada
 Select * from Saida
 Select * from Produto
 
-
 CREATE PROCEDURE sp_insereproduto(@Codigo_Produto INT, @Valor_Total FLOAT,
 @Quantidade INT, @tipo VARCHAR(1), @Nome VARCHAR(100), @Valor FLOAT)
 AS
