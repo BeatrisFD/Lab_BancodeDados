@@ -86,7 +86,7 @@ SELECT lower('FRASE DE EXEMPLO') as minusculo
 -- Fazer um algoritmo que inverta uma palavra
 SELECT Reverse('exemplo') AS inverso
 
--- Verificar palindromo
+-- Verificar o palindromo
 DECLARE @string NVARCHAR(255);
 SET @string = 'aaa';
 
