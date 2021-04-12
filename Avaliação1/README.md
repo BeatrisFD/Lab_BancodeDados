@@ -4,4 +4,5 @@ Avaliação 1 para a disciplina de Laboratório de Banco de Dados na FATEC Zona 
 
 Feito por: 
 Beatris Franklin
+
 Vinicius Clarindo
