@@ -1,6 +1,5 @@
 /*
-- Após a inserção de cada linha na tabela venda, 10% do total deverá ser transformado em pontos.
-- Se o cliente ainda não estiver na tabela de pontos, deve ser inserido automaticamente após sua primeira compra
+- Se o cliente ainda nÃ£o estiver na tabela de pontos, deve ser inserido automaticamente apÃ³s sua primeira compra
 - Se o cliente atingir 1 ponto, deve receber uma mensagem dizendo que ganhou
 */
 
@@ -52,17 +51,29 @@ CREATE TRIGGER t_protegeproduto ON venda
 FOR DELETE
 AS 
 BEGIN
-	ROLLBACK TRANSACTION --Desfaz a última transação
-	RAISERROR('Não é permitido apagar os produtos', 16, 1)
+	ROLLBACK TRANSACTION --Desfaz a Ãºltima transaÃ§Ã£o
+	RAISERROR('NÃ£o Ã© permitido apagar os produtos', 16, 1)
 END
 
 CREATE TRIGGER t_protegevenda ON venda
 FOR update
 AS 
 BEGIN
-	ROLLBACK TRANSACTION --Desfaz a última transação
-	RAISERROR('Não é permitido alterar a venda', 16, 1)
+	ROLLBACK TRANSACTION --Desfaz a Ãºltima transaÃ§Ã£o
+	RAISERROR('NÃ£o Ã© permitido alterar a venda', 16, 1)
 	Select c.nome, v.valor_total from venda as v, cliente as c 
 		where v.codigo_cliente = c.codigo & v.codigo_cliente = (SELECT max(codigo_venda) FROM venda)
 END
 
+CREATE TRIGGER t_geravalorpontos ON venda
+FOR insert
+AS 
+BEGIN
+	DECLARE @valorvenda		DECIMAL (7,2)
+	DECLARE @cliente        int
+	DECLARE @pontos			DECIMAL (7,2)
+
+	@pontos = (@valorvenda * 0.10)
+
+	INSERT INTO pontos VALUES (@cliente, @pontos)
+END
